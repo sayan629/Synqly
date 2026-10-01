@@ -75,3 +75,24 @@ export async function listUserThreads(
         : String(thread.updatedAt),
   }));
 }
+
+export async function getThreadMessages(
+  authUserId: string,
+  threadId: string,
+): Promise<ThreadMessage[]> {
+  const memory = createAgentMemory();
+
+  const thread = await memory.getThreadById({
+    threadId,
+    resourceId: authUserId,
+  });
+
+  if (!thread || thread.resourceId !== authUserId) {
+    throw new Error("Thread not found");
+  }
+
+  const recalledMemoryData = await memory.recall({
+    threadId,
+    resourceId: authUserId,
+    perPage: false,
+  });
