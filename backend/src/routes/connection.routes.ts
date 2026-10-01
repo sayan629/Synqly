@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { requireSession } from '../middleware/requireSession.js';
-import { getCalendarConnection } from '../services/connection.services.js';
+import { createCalendarConnectUrl, getCalendarConnection } from '../services/connection.services.js';
 
 
 
@@ -44,3 +44,5 @@ connectionRouter.post("/connect", async(req, res)=>{
          res.status(500).json({error: "could not start connection"})
     }
 })
+
+connectionRouter.post("")
