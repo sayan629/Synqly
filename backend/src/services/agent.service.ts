@@ -96,3 +96,27 @@ export async function getThreadMessages(
     resourceId: authUserId,
     perPage: false,
   });
+
+  const messages: ThreadMessage[] = [];
+
+  for (const message of recalledMemoryData.messages) {
+    const content = messageText(message.content);
+
+    if (!content) {
+      continue;
+    }
+
+    const role: ThreadMessage["role"] =
+      message.role === "user" || message.role === "assistant"
+        ? message.role
+        : "system";
+
+    messages.push({
+      id: message.id,
+      role,
+      content,
+    });
+  }
+
+  return messages;
+}
