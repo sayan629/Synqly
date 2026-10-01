@@ -31,3 +31,10 @@ export async function ConnectCalendar(token: string) {
     
 }
 
+export async function refreshCalendarConnection(token: string) {
+    await apiFetch("/api/connections/refresh-status", {
+        method: 'POST',
+        token,
+    });
+    
+}
