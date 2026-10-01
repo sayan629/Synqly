@@ -32,3 +32,16 @@ export type ThreadMessage = {
 function modelName() {
   return `openai/${process.env.AI_MODEL ?? "gpt-4o-mini"}`;
 }
+
+function messageText(content: unknown): string {
+  if (typeof content === "string") return content.trim();
+  if (!content || typeof content !== "object") return "";
+
+  const record = content as {
+    content?: unknown;
+    parts?: Array<{ type?: string; text?: string }>;
+  };
+
+  if (typeof record.content === "string" && record.content.trim()) {
+    return record.content.trim();
+  }
