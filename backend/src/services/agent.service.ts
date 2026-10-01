@@ -17,3 +17,18 @@ export type StreamAgentReplyInput = {
   onEvent: (event: AgentEvent) => void;
 };
 
+export type ThreadSummary = {
+  id: string;
+  title: string;
+  updatedAt: string;
+};
+
+export type ThreadMessage = {
+  id: string;
+  role: "user" | "assistant" | "system";
+  content: string;
+};
+
+function modelName() {
+  return `openai/${process.env.AI_MODEL ?? "gpt-4o-mini"}`;
+}
