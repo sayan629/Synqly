@@ -37,3 +37,31 @@ export async function createCalendarConnectUrl(input: {
 
     return {url: response.data.url}
 }
+
+export async function refreshCalendarConnection(input: {
+    userId: string;
+    authUserId: string
+    
+}){
+    if(!process.env.DESCOPE_MANAGEMENT_KEY){
+        throw new Error("DESCOPE_MANAGEMENT_KEY is not set in env file")
+    }
+
+    const response = await descopeClient.management.outboundApplication.fetchToken(
+        calendarAppId(),
+        input.authUserId
+    )
+
+    const status = response.ok && response.data ? "connected" : "disconnected"
+
+    const row = await upsertCalendarConnection({
+        userId: input.userId,
+        status
+    })
+
+    return{
+        label: CALENDAR_CONNECTION_LABEL,
+        status: row.status,
+    }
+
+}

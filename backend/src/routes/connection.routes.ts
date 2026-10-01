@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { requireSession } from '../middleware/requireSession.js';
-import { createCalendarConnectUrl, getCalendarConnection } from '../services/connection.services.js';
+import { createCalendarConnectUrl, getCalendarConnection, refreshCalendarConnection } from '../services/connection.services.js';
 
 
 
@@ -45,4 +45,16 @@ connectionRouter.post("/connect", async(req, res)=>{
     }
 })
 
-connectionRouter.post("")
+connectionRouter.post("/refresh-status", async(req, res) => {
+    try {
+        const connection = await refreshCalendarConnection({
+            userId: req.auth!.userId,
+            authUserId: req.auth!.authUserId,
+        });
+
+        res.json({ connection });
+        
+    } catch {
+        res.status(500).json({error: "failed to refresh the status"})
+    }
+})
