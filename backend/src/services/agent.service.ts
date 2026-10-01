@@ -45,3 +45,12 @@ function messageText(content: unknown): string {
   if (typeof record.content === "string" && record.content.trim()) {
     return record.content.trim();
   }
+
+  if (!Array.isArray(record.parts)) return "";
+  return record.parts
+    .filter((part) => part.type === "text" && typeof part.text === "string")
+    .map((part) => part.text!.trim())
+    .filter(Boolean)
+    .join("\n")
+    .trim();
+}
