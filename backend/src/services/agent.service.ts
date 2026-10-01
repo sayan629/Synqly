@@ -149,3 +149,25 @@ export async function streamAgentReply(input: StreamAgentReplyInput) {
     },
   });
 
+  for await (const chunk of result.fullStream) {
+    if (chunk.type === "tool-call") {
+      input.onEvent({
+        type: "progress",
+        message: `Running ${chunk.payload.toolName}`,
+      });
+
+      continue;
+    }
+
+    if (chunk.type === "text-delta") {
+      const text = chunk.payload.text;
+
+      if (text) {
+        input.onEvent({
+          type: "token",
+          token: text,
+        });
+      }
+    }
+  }
+
