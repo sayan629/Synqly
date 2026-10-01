@@ -120,3 +120,32 @@ export async function getThreadMessages(
 
   return messages;
 }
+
+export async function streamAgentReply(input: StreamAgentReplyInput) {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not set env");
+  }
+
+  input.onEvent({
+    type: "started",
+    message: "Agent is planning",
+  });
+
+  const memory = createAgentMemory();
+
+  const agent = new Agent({
+    id: "metting-assistant",
+    name: "Meeting Assitant",
+    instructions: getAgentInstructions(),
+    model: modelName(),
+    tools: createCalendarTools(input.authUserId),
+    memory,
+  });
+
+  const result = await agent.stream(input.message, {
+    memory: {
+      resource: input.authUserId,
+      thread: input.threadId,
+    },
+  });
+
