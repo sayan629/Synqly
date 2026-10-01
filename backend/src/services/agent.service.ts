@@ -171,3 +171,24 @@ export async function streamAgentReply(input: StreamAgentReplyInput) {
     }
   }
 
+    // streaming finsihes
+
+  const thread = await memory.getThreadById({
+    threadId: input.threadId,
+    resourceId: input.authUserId,
+  });
+
+  if (thread && !thread.title?.trim()) {
+    await memory.updateThread({
+      id: thread.id,
+      title: input.message.slice(0, 80),
+      metadata: thread.metadata ?? {},
+    });
+  }
+
+  input.onEvent({
+    type: "completed",
+    message: "done",
+  });
+}
+
