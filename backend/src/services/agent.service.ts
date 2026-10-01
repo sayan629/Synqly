@@ -54,3 +54,24 @@ function messageText(content: unknown): string {
     .join("\n")
     .trim();
 }
+
+export async function listUserThreads(
+  authUserId: string,
+): Promise<ThreadSummary[]> {
+  const memory = createAgentMemory();
+
+  const result = await memory.listThreads({
+    filter: { resourceId: authUserId },
+    perPage: 30,
+    orderBy: { field: "updatedAt", direction: "DESC" },
+  });
+
+  return result.threads.map((thread) => ({
+    id: thread.id,
+    title: thread.title?.trim() || "Untitled Chat",
+    updatedAt:
+      thread.updatedAt instanceof Date
+        ? thread.updatedAt.toISOString()
+        : String(thread.updatedAt),
+  }));
+}
