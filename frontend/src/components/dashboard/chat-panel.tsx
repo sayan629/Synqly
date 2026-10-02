@@ -19,7 +19,7 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
   listThreads,
-  loadThread,
+  loadThreads,
   streamAgentChat,
   ThreadSummary,
 } from "@/lib/agent";
@@ -27,6 +27,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Textarea } from "../ui/textarea";
 import { cn } from "@/lib/utils";
 import { MarkdownMessage } from "./markdown-message";
+
 
 const styles = {
   root: "flex h-svh overflow-hidden",
@@ -182,7 +183,7 @@ function ChatPanel({ sessionToken, connections, footer }: Props) {
     setProgress(null);
 
     try {
-      const data = await loadThread(sessionToken, nextThreadId);
+      const data = await loadThreads(sessionToken, nextThreadId);
       setThreadId(data.threadId);
       setMessages(
         data.messages.length > 0 ? data.messages : [WelcomeMessage()],
