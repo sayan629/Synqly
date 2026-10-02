@@ -1,6 +1,7 @@
 import { descopeMcpAuthRouter, DescopeMcpProvider } from "@descope/mcp-express";
-import { listUpcomingMeetingsTools } from "./calendar-tools.js";
+
 import type { Express } from "express";
+import { listUpcomingMeetingsTools } from "./calendar-tools.js";
 
 export function mountMcpServer(app: Express) {
   const wellKnown = process.env.DESCOPE_MCP_SERVER_WELL_KNOWN_URL;
