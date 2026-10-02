@@ -22,5 +22,8 @@ export const ThreadMessage = {
 }
 
 export async function listThreads(token: string){
-    return apiFetch<{ threads: ThreadSummary[] }>("/api/agent/threads")
+    return apiFetch<{ threads: ThreadSummary[] }>("/api/agent/threads",{
+        token,
+    })
 }
+
