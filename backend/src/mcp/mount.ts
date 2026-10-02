@@ -17,3 +17,20 @@ export function mountMcpServer(app: Express) {
     descopeMcpServerWellKnownUrl: wellKnown,
     projectId: process.env.DESCOPE_PROJECT_ID,
   });
+
+    app.use(
+    descopeMcpAuthRouter((server) => {
+      // register all out tools
+      listUpcomingMeetingsTools(server);
+    }, provider),
+  );
+
+  // cursor -> sends GET /mcp
+
+  app.get("/mcp", (_req, res) => {
+    res.status(405).set("Allow", "Post").send("Method not allowed");
+  });
+
+  console.log(`MCP endpoint: POST ${serverUrl}/mcp`);
+}
+
