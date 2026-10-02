@@ -45,8 +45,9 @@ export async function streamAgentChat (
             Authorization: `Bearer ${token}`,
             "Cpntent-Type" : "application/json",
             Accept: "text/event-stream"
-        }
-    })
+        },
+        body: JSON.stringify(input),
+    });
 
     if(!res.ok || !res.body){
         throw new Error("Agent request failed")
