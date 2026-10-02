@@ -15,7 +15,7 @@ export type ThreadSummary = {
     updatedAt:string;
 };
 
-export const ThreadMessage = {
+export type ThreadMessage = {
     id: string;
     role: "user" | "assistant" | "system";
     content: string;
@@ -39,6 +39,8 @@ export async function streamAgentChat (
     input: {message: string; threadId: string},
     onEvent: (event: AgentStreamEvent)=>void
 ) {
-    const res = await fetch(`${API_URL}/api/agent`)
+    const res = await fetch(`${API_URL}/api/agent/chat`,{
+
+    })
 }
 
