@@ -62,6 +62,20 @@ export async function streamAgentChat (
         const {value, done} = await reader.read();
 
         buffer += decoder.decode(value, {stream: !done})
+
+        // sse events ->
+        const blocks = buffer.split(/\n\n/);
+        buffer = blocks.pop() ?? "";
+
+        for (const block of blocks){
+            for (const line of block.split("\n")){
+                if(!line.startsWith("data:")) continue;
+                // strip the data: prefix
+                const data = line.slice(5).trim()
+
+                if(data) onEvent(JSON.parse(data) as AgentStreamEvent)
+            }
+        }
     }
 
 }
