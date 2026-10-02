@@ -24,3 +24,33 @@ const styles = {
   h3: "mb-2 text-base font-semibold",
   blockquote: "mb-3 border-l-2 border-primary/40 pl-3 text-muted-foreground",
 } as const;
+
+type Props = {
+  content: string;
+  className?: string;
+  tone?: "assistant" | "user" | "system";
+};
+
+export function MarkdownMessage({
+  content,
+  className,
+  tone = "assistant",
+}: Props) {
+  return (
+    <div
+      className={cn(styles.root, tone === "user" && styles.rootUser, className)}
+    >
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          a: ({ href, children }) => <Link href={href ?? "#"}>{children}</Link>,
+          p: ({ children }) => <p className={styles.p}>{children}</p>,
+          ul: ({ children }) => <ul className={styles.ul}>{children}</ul>,
+          ol: ({ children }) => <ol className={styles.ol}>{children}</ol>,
+          li: ({ children }) => <li className={styles.li}>{children}</li>,
+          strong: ({ children }) => (
+            <strong className={styles.strong}>{children}</strong>
+          ),
+          em: ({ children }) => <em className={styles.em}>{children}</em>,
+          code: ({ children, className: codeClassName }) => {
+            const isBlock = Boolean(codeClassName);
