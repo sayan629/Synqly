@@ -48,6 +48,21 @@ export async function streamAgentChat (
         }
     })
 
-    
+    if(!res.ok || !res.body){
+        throw new Error("Agent request failed")
+    }
+
+    const reader = res.body.getReader();
+
+    const decoder = new TextDecoder();
+
+    let buffer = ""
+
+    while(true){
+        const {value, done} = await reader.read();
+
+        buffer += decoder.decode(value, {stream: !done})
+    }
+
 }
 
