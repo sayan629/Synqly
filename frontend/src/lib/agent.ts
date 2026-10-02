@@ -76,6 +76,8 @@ export async function streamAgentChat (
                 if(data) onEvent(JSON.parse(data) as AgentStreamEvent)
             }
         }
+
+        if(done) break
     }
 
 }
