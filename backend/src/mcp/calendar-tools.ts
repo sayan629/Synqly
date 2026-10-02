@@ -19,3 +19,21 @@ function authUserIdFromToken(token: string): string {
 
   return String(payload.sub);
 }
+
+const defineMcpTool = defineTool as (cfg: {
+  name: string;
+  description: string;
+  input?: Record<string, unknown>;
+  scopes?: string[];
+  handler: (
+    args: Record<string, unknown>,
+    extra: AuthenticatedExtra,
+  ) => ReturnType<typeof textResult> | Promise<ReturnType<typeof textResult>>;
+}) => ReturnType<typeof defineTool>;
+
+export const listUpcomingMeetingsTools = defineMcpTool({
+  name: "listUpcomingMeetings",
+  description:
+    "List Google Calendar events. Set todayOnly=true for today's agenda only.",
+  input: {
+    maxResults: z.number().int().min(1).max(20).optional(),
