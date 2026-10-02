@@ -40,7 +40,14 @@ export async function streamAgentChat (
     onEvent: (event: AgentStreamEvent)=>void
 ) {
     const res = await fetch(`${API_URL}/api/agent/chat`,{
-
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Cpntent-Type" : "application/json",
+            Accept: "text/event-stream"
+        }
     })
+
+    
 }
 
