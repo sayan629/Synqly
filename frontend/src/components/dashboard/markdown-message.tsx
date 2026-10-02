@@ -54,3 +54,23 @@ export function MarkdownMessage({
           em: ({ children }) => <em className={styles.em}>{children}</em>,
           code: ({ children, className: codeClassName }) => {
             const isBlock = Boolean(codeClassName);
+                        return (
+              <code className={isBlock ? styles.codeBlock : styles.codeInline}>
+                {children}
+              </code>
+            );
+          },
+          pre: ({ children }) => <pre className={styles.pre}>{children}</pre>,
+          h1: ({ children }) => <h3 className={styles.h1}>{children}</h3>,
+          h2: ({ children }) => <h3 className={styles.h2}>{children}</h3>,
+          h3: ({ children }) => <h3 className={styles.h3}>{children}</h3>,
+          blockquote: ({ children }) => (
+            <blockquote className={styles.blockquote}>{children}</blockquote>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+}
