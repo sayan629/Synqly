@@ -19,11 +19,26 @@ export const ThreadMessage = {
     id: string;
     role: "user" | "assistant" | "system";
     content: string;
-}
+};
 
 export async function listThreads(token: string){
     return apiFetch<{ threads: ThreadSummary[] }>("/api/agent/threads",{
         token,
     })
+}
+
+export async function loadThreads(token: string, threadId:string){
+    return apiFetch<{ threadId: string; messages: ThreadMessage[] }>(
+        `/api/agent/threads/${threadId}`,
+        { token },
+    );
+}
+
+export async function streamAgentChat (
+    token: string,
+    input: {message: string; threadId: string},
+    onEvent: (event: AgentStreamEvent)=>void
+) {
+    const res = await fetch(`${API_URL}/api/agent`)
 }
 
